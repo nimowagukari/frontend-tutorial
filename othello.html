@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>オセロゲーム</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            border: 1px solid;
+            border-collapse: collapse;
+        }
+
+        td {
+            font-size: large;
+            border: 1px solid;
+            width: 50px;
+            text-align: center;
+        }
+
+        tr {
+            height: 50px;
+        }
+
+        .form {
+            text-align: center;
+            margin: 20px auto;
+        }
+
+        .message {
+            margin: 0 auto;
+            width: 400px;
+            height: 60px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>オセロゲーム</h1>
+    <table align="center">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>●</td>
+            <td>○</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>○</td>
+            <td>●</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <div class="form">
+        <input type="button" value="開始する" onclick="startGame()">
+    </div>
+    <div class="message">
+        <p id="yourStone"></p>
+    </div>
+    <script>
+        let fieldCells = document.querySelectorAll("td");
+        let cellMatrix = [];
+        let cellsCanPut;
+        let cPos;
+        let rPos;
+        let nowStone = "○";
+        let yourStone = document.getElementById("yourStone");
+        let button = document.querySelector("input");
+
+        // 空のフィールド変数を作成
+        for (r = 0; r < 8; r++) {
+            cellMatrix.push([]);
+        };
+
+        // テーブルの各セルを二次元配列に格納
+        for (let i = 0; i < fieldCells.length; i++) {
+            cPos = i % 8;
+            rPos = Math.floor(i / 8);
+            cellMatrix[rPos][cPos] = fieldCells[i];
+            cellMatrix[rPos][cPos].setAttribute("id", String(rPos) + "_" + String(cPos));
+        };
+
+        /*
+        処理内容
+        
+        開始
+        石を置ける場所をチェック
+            自身と同じ色の石の位置を textContent から特定
+            各石の周りに別の色の石があるかチェック
+                ８方向の色をチェックし、
+            別色の石がある方向の対面に石を置けるかチェック
+        石を置ける場所をクリックして配置
+            石を置ける場所にイベントを付与
+                セル縁を太くしてわかるようにする
+                マウスオーバしたら表示が変わる
+                クリックしたら置かれる
+        
+        */
+
+        // マウスオーバ処理
+        function mouseOverOnCell(cell) {
+            cell.target.textContent = nowStone;
+            cell.target.style.background = "rgb(200,200,200)";
+            cell.target.style.borderWidth = "5px";
+        };
+        function mouseLeaveFromCell(cell) {
+            cell.target.textContent = "";
+            cell.target.style.background = "rgb(255,255,255)";
+            cell.target.style.borderWidth = "1px";
+        };
+
+        // 石配置処理
+        function putStone(cell) {
+            for (let c of cellsCanPut) {
+                c.removeEventListener("mouseover", mouseOverOnCell);
+                c.removeEventListener("mouseleave", mouseLeaveFromCell);
+                c.removeEventListener("click", putStone);
+            }
+            cell.target.style.background = "rgb(255,255,255)";
+            cell.target.style.borderWidth = "1px";
+            cell.textContent = nowStone;
+            toggleTurn();
+            checkCellsCanPutStone();
+        };
+
+        function getAnotherStone(stone) {
+            switch (stone) {
+                case "●":
+                    stone = "○";
+                    break;
+                case "○":
+                    stone = "●";
+                    break;
+                default:
+                    throw new Error("石がありません");
+            };
+            return stone;
+        };
+
+        function toggleTurn() {
+            nowStone = getAnotherStone(nowStone);
+            yourStone.textContent = `現在の石は ${nowStone} です`;
+        };
+
+        function selectCellsAround(cell, condition) {
+            let cells = [];
+            let pos = cell.id.split("_").map((v) => { return Number(v) });
+            let rPos = pos[0];
+            let cPos = pos[1];
+            for (let r = rPos - 1; r <= rPos + 1; r++) {
+                if (r < 0 || r > 7) {
+                    continue;
+                }
+                for (let c = cPos - 1; c <= cPos + 1; c++) {
+                    if (c < 0 || c > 7) {
+                        continue;
+                    };
+                    if (c === cPos && r === rPos) {
+                        continue;
+                    };
+                    switch (condition) {
+                        case 'none':
+                            if (cellMatrix[r][c].textContent === '') {
+                                cells.push(cellMatrix[r][c]);
+                            }
+                            break;
+                        case 'same':
+                            if (cellMatrix[r][c].textContent === nowStone) {
+                                cells.push(cellMatrix[r][c]);
+                            }
+                            break;
+                        case 'another':
+                            if (cellMatrix[r][c].textContent === getAnotherStone(nowStone)) {
+                                cells.push(cellMatrix[r][c]);
+                            }
+                            break;
+                        default:
+                            cells.push(cellMatrix[r][c]);
+                    }
+                };
+            };
+            return cells;
+        }
+
+        function selectCellsOnAnotherStone() {
+            let cell;
+            let cells = [];
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    if (cellMatrix[r][c].textContent === getAnotherStone(nowStone)) {
+                        cell = cellMatrix[r][c];
+                        cells.push(cell);
+                    };
+                };
+            };
+            return cells;
+        };
+
+        function selectEmptyCellsAround(cells) {
+            let emptyCellsAround = new Set();
+            let cellsAround;
+            for (let c of cells) {
+                cellsAround = selectCellsAround(c, 'none');
+                for (let c2 of cellsAround) {
+                    emptyCellsAround.add(c2);
+                };
+            };
+            emptyCellsAround = Array.from(emptyCellsAround);
+            return emptyCellsAround;
+        };
+
+        function selectCellsCanPutStoneOppositeSide(cells) {
+            let cellsAroundOnAnotherStone;
+            for (let c of cells) {
+                cellsAroundOnAnotherStone = selectCellsAround(c,'another');
+                
+            }
+        };
+
+        // function PutStoneOnCell() {
+
+        // };
+
+        // function turnOverStone() {
+
+        // };
+
+        function checkCellsCanPutStone() {
+            let cells = selectCellsOnAnotherStone();
+            cells = selectEmptyCellsAround(cells);
+            cellsCanPut = selectCellsCanPutStoneOppositeSide(cells)
+            for (let c of cellsCanPut) {
+                c.addEventListener("mouseover", mouseOverOnCell);
+                c.addEventListener("mouseleave", mouseLeaveFromCell);
+                c.addEventListener("click", putStone);
+            };
+        };
+
+        // ゲーム開始
+        function startGame() {
+            button.disabled = true;
+            yourStone.textContent = `現在の石は ${nowStone} です`;
+            checkCellsCanPutStone();
+        };
+
+    </script>
+</body>
+
+</html>

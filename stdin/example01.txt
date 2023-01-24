@@ -1,0 +1,4 @@
+hoge hoge
+fuga 123
+true false
+undefined
