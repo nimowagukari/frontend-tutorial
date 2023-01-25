@@ -281,12 +281,132 @@
             return emptyCellsAround;
         };
 
-        function selectCellsCanPutStoneOppositeSide(cells) {
-            let cellsAroundOnAnotherStone;
-            for (let c of cells) {
-                cellsAroundOnAnotherStone = selectCellsAround(c,'another');
-                
+        const DIRECTION = {
+            UPPER_LEFT: 1,
+            UP: 2,
+            UPPER_RIGHT: 3,
+            LEFT: 4,
+            RIGHT: 5,
+            LOWER_LEFT: 6,
+            UNDER: 7,
+            LOWER_RIGHT: 8
+        }
+
+        function getDirection(n1, n2) {
+            let n1Pos = n1.id.split("_").map((v) => { return Number(v) });
+            let n2Pos = n2.id.split("_").map((v) => { return Number(v) });
+            let rMove = n2Pos[0] - n1Pos[0];
+            let cMove = n2Pos[1] - n1Pos[1];
+            let direction;
+            if (rMove === 1) {
+                switch (cMove) {
+                    case 1:
+                        direction = DIRECTION.LOWER_RIGHT;
+                        break;
+                    case 0:
+                        direction = DIRECTION.UNDER;
+                        break;
+                    case -1:
+                        direction = DIRECTION.LOWER_LEFT;
+                        break;
+                }
+            } else if (rMove === 0) {
+                switch (cMove) {
+                    case 1:
+                        direction = DIRECTION.RIGHT;
+                        break;
+                    case -1:
+                        direction = DIRECTION.LEFT;
+                        break;
+                }
+            } else if (rMove === -1) {
+                switch (cMove) {
+                    case 1:
+                        direction = DIRECTION.UPPER_RIGHT;
+                        break;
+                    case 0:
+                        direction = DIRECTION.UP;
+                        break;
+                    case -1:
+                        direction = DIRECTION.UPPER_LEFT;
+                        break;
+                }
+            } else {
+                direction = null;
             }
+            return direction
+        }
+
+        function moveCell(cell, direction) {
+            let pos = cell.id.split("_").map((v) => { return Number(v) });
+            let rPos = pos[0];
+            let cPos = pos[1];
+            let movedCell;
+            switch (direction) {
+                case DIRECTION.UPPER_LEFT:
+                    movedCell = cellMatrix[rPos - 1][cPos - 1]
+                    break;
+                case DIRECTION.UPPER:
+                    movedCell = cellMatrix[rPos - 1][cPos]
+                    break;
+                case DIRECTION.UPPER_RIGHT:
+                    movedCell = cellMatrix[rPos - 1][cPos + 1]
+                    break;
+                case DIRECTION.LEFT:
+                    movedCell = cellMatrix[rPos][cPos - 1]
+                    break;
+                case DIRECTION.RIGHT:
+                    movedCell = cellMatrix[rPos][cPos + 1]
+                    break;
+                case DIRECTION.LOWER_LEFT:
+                    movedCell = cellMatrix[rPos + 1][cPos - 1]
+                    break;
+                case DIRECTION.UNDER:
+                    movedCell = cellMatrix[rPos + 1][cPos]
+                    break;
+                case DIRECTION.LOWER_RIGHT:
+                    movedCell = cellMatrix[rPos + 1][cPos + 1]
+                    break;
+                default:
+                    console.error("方向の指定が間違っています");
+            }
+            return movedCell;
+        }
+
+        function checkDirectionCanPutStone(from, direction) {
+            let canPutStone;
+            let to = moveCell(from, direction);
+            switch (to.textContent) {
+                case nowStone:
+                    canPutStone = false;
+                    break;
+                case getAnotherStone(nowStone):
+                    canPutStone = checkDirectionCanPutStone(to, direction);
+                    break;
+                case '':
+                    canPutStone = true;
+                    break;
+                default:
+                    console.error('石の状態がおかしいです')
+            }
+            return canPutStone;
+        }
+
+        function selectCellsCanPutStoneOppositeSide(cells) {
+            let cellsCanPutStoneOppositeSide = new Set();
+            let cellsAroundOnAnotherStone;
+            for (let f of cells) {
+                cellsAroundOnAnotherStone = selectCellsAround(f, 'another');
+                for (let t of cellsAroundOnAnotherStone) {
+                    direction = getDirection(f, t);
+                    canPutStoneOppositeSide = checkDirectionCanPutStone(f, direction);
+                    if (canPutStoneOppositeSide) {
+                        cellsCanPutStoneOppositeSide.add(t);
+                    }
+                }
+            }
+            cellsCanPutStoneOppositeSide = Array.from(cellsCanPutStoneOppositeSide);
+            return cellsCanPutStoneOppositeSide;
         };
 
         // function PutStoneOnCell() {
@@ -301,11 +421,14 @@
             let cells = selectCellsOnAnotherStone();
             cells = selectEmptyCellsAround(cells);
             cellsCanPut = selectCellsCanPutStoneOppositeSide(cells)
-            for (let c of cellsCanPut) {
-                c.addEventListener("mouseover", mouseOverOnCell);
-                c.addEventListener("mouseleave", mouseLeaveFromCell);
-                c.addEventListener("click", putStone);
-            };
+            // cellsCanPut = selectEmptyCellsAround(cells);
+            if (cellsCanPut.length > 0) {
+                for (let c of cellsCanPut) {
+                    c.addEventListener("mouseover", mouseOverOnCell);
+                    c.addEventListener("mouseleave", mouseLeaveFromCell);
+                    c.addEventListener("click", putStone);
+                };
+            }
         };
 
         // ゲーム開始
