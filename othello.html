@@ -190,7 +190,8 @@
             }
             cell.target.style.background = "rgb(255,255,255)";
             cell.target.style.borderWidth = "1px";
-            cell.textContent = nowStone;
+            cell.target.textContent = nowStone;
+            turnOverStones(cell.target);
             toggleTurn();
             checkCellsCanPutStone();
         };
@@ -254,7 +255,7 @@
             return cells;
         }
 
-        function selectCellsOnAnotherStone() {
+        function selectCellsOnAnotherStoneInFIeld() {
             let cell;
             let cells = [];
             for (let r = 0; r < 8; r++) {
@@ -337,8 +338,8 @@
             return direction
         }
 
-        function moveCell(cell, direction) {
-            let pos = cell.id.split("_").map((v) => { return Number(v) });
+        function moveCell(fromCell, direction) {
+            let pos = fromCell.id.split("_").map((v) => { return Number(v) });
             let rPos = pos[0];
             let cPos = pos[1];
             let movedCell;
@@ -346,7 +347,7 @@
                 case DIRECTION.UPPER_LEFT:
                     movedCell = cellMatrix[rPos - 1][cPos - 1]
                     break;
-                case DIRECTION.UPPER:
+                case DIRECTION.UP:
                     movedCell = cellMatrix[rPos - 1][cPos]
                     break;
                 case DIRECTION.UPPER_RIGHT:
@@ -373,18 +374,22 @@
             return movedCell;
         }
 
-        function checkDirectionCanPutStone(from, direction) {
+        function checkDirectionCanPutStone(fromCell, direction) {
             let canPutStone;
-            let to = moveCell(from, direction);
+            let to = moveCell(fromCell, direction);
+            // if (to === undefined) {
+            //     canPutStone = false
+            //     return canPutStone
+            // }
             switch (to.textContent) {
                 case nowStone:
-                    canPutStone = false;
+                    canPutStone = true;
                     break;
                 case getAnotherStone(nowStone):
                     canPutStone = checkDirectionCanPutStone(to, direction);
                     break;
                 case '':
-                    canPutStone = true;
+                    canPutStone = false;
                     break;
                 default:
                     console.error('石の状態がおかしいです')
@@ -401,7 +406,7 @@
                     direction = getDirection(f, t);
                     canPutStoneOppositeSide = checkDirectionCanPutStone(f, direction);
                     if (canPutStoneOppositeSide) {
-                        cellsCanPutStoneOppositeSide.add(t);
+                        cellsCanPutStoneOppositeSide.add(f);
                     }
                 }
             }
@@ -409,19 +414,36 @@
             return cellsCanPutStoneOppositeSide;
         };
 
-        // function PutStoneOnCell() {
+        function walkTurnOverStone(fromCell, direction) {
+            let movedCell = moveCell(fromCell, direction);
+            switch (movedCell.textContent) {
+                case nowStone:
+                    break;
+                case getAnotherStone(nowStone):
+                    movedCell.textContent = nowStone;
+                    walkTurnOverStone(movedCell, direction);
+                    break;
+            }
+        }
 
-        // };
-
-        // function turnOverStone() {
-
-        // };
+        function turnOverStones(cell) {
+            let from = cell;
+            let cells = selectCellsAround(from, 'another');
+            let canPut;
+            let direction;
+            for (to of cells) {
+                direction = getDirection(from, to);
+                canPut = checkDirectionCanPutStone(from, direction);
+                if (canPut) {
+                    walkTurnOverStone(from, direction);
+                }
+            }
+        };
 
         function checkCellsCanPutStone() {
-            let cells = selectCellsOnAnotherStone();
+            let cells = selectCellsOnAnotherStoneInFIeld();
             cells = selectEmptyCellsAround(cells);
             cellsCanPut = selectCellsCanPutStoneOppositeSide(cells)
-            // cellsCanPut = selectEmptyCellsAround(cells);
             if (cellsCanPut.length > 0) {
                 for (let c of cellsCanPut) {
                     c.addEventListener("mouseover", mouseOverOnCell);
