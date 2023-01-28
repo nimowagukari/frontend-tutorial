@@ -76,8 +76,8 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>●</td>
-            <td>○</td>
+            <td></td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -86,8 +86,8 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>○</td>
-            <td>●</td>
+            <td></td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -124,20 +124,33 @@
         </tr>
     </table>
     <div class="form">
-        <input type="button" value="開始する" onclick="startGame()">
+        <input id="startButton" type="button" value="始める" onclick="startGame()">
     </div>
     <div class="message">
-        <p id="yourStone"></p>
+        <p id="message"></p>
     </div>
     <script>
         let fieldCells = document.querySelectorAll("td");
         let cellMatrix = [];
+        let cellsCanPutBefore;
         let cellsCanPut;
         let cPos;
         let rPos;
         let nowStone = "○";
-        let yourStone = document.getElementById("yourStone");
-        let button = document.querySelector("input");
+        let message = document.getElementById("message");
+        let stoneCount = {
+            "white": 0,
+            "black": 0,
+            "none": 0
+        }
+        let startButton = document.getElementById("startButton");
+        let passButton = document.createElement("input");
+        passButton.setAttribute("id", "passButton");
+        passButton.setAttribute("type", "button");
+        passButton.setAttribute("value", "パスする");
+        passButton.setAttribute("onclick", "passTurn()");
+        passButton.disabled = true;
+        let form = document.getElementsByClassName("form");
 
         // 空のフィールド変数を作成
         for (r = 0; r < 8; r++) {
@@ -181,6 +194,37 @@
             cell.target.style.borderWidth = "1px";
         };
 
+        function countStonesOnField() {
+            stoneCount.white = 0
+            stoneCount.black = 0
+            stoneCount.none = 0
+            for (c of fieldCells) {
+                switch (c.textContent) {
+                    case "○":
+                        stoneCount.white += 1
+                        break;
+                    case "●":
+                        stoneCount.black += 1
+                        break;
+                    case "":
+                        stoneCount.none += 1
+                        break;
+                }
+            }
+        }
+        function judgeResult() {
+            passButton.remove();
+            if (stoneCount.white > stoneCount.black) {
+                message.textContent = "○ の勝利です"
+            } else if (stoneCount.white < stoneCount.black) {
+                message.textContent = "● の勝利です"
+            } else if (stoneCount.white === stoneCount.black) {
+                message.textContent = "引き分けです"
+            }
+            startButton.disabled = false;
+            startButton.textContent = "もう一度始める"
+        }
+
         // 石配置処理
         function putStone(cell) {
             for (let c of cellsCanPut) {
@@ -193,9 +237,21 @@
             cell.target.style.borderWidth = "1px";
             cell.target.textContent = nowStone;
             turnOverStones(cell.target);
+            countStonesOnField()
             toggleTurn();
             checkCellsCanPutStone();
+            if (cellsCanPutBefore === cellsCanPut === 0 || stoneCount.none === 0) {
+                judgeResult();
+            }
         };
+
+        function passTurn() {
+            toggleTurn();
+            checkCellsCanPutStone();
+            if (cellsCanPutBefore === cellsCanPut === 0 || stoneCount.none === 0) {
+                judgeResult();
+            }
+        }
 
         function getAnotherStone(stone) {
             switch (stone) {
@@ -213,7 +269,7 @@
 
         function toggleTurn() {
             nowStone = getAnotherStone(nowStone);
-            yourStone.textContent = `現在の石は ${nowStone} です`;
+            message.textContent = `現在の石は ${nowStone} です`;
         };
 
         function selectCellsAround(cell, condition) {
@@ -379,6 +435,7 @@
         function checkCellsCanPutStone() {
             let cells = selectCellsOnAnotherStoneInFIeld();
             cells = selectEmptyCellsAround(cells);
+            cellsCanPutBefore = cellsCanPut;
             cellsCanPut = selectCellsCanPutStoneOppositeSide(cells)
             if (cellsCanPut.length > 0) {
                 for (let c of cellsCanPut) {
@@ -387,13 +444,40 @@
                     c.addEventListener("mouseleave", resetHighlight);
                     c.addEventListener("click", putStone);
                 };
+            } else if (cellsCanPut.length === 0) {
+                passButton.disabled = false;
             }
         };
 
+        function initializeField() {
+            let pos;
+            let rPos;
+            let cPos;
+            for (c of fieldCells) {
+                pos = c.id.split("_").map((v) => { return Number(v) });
+                rPos = pos[0];
+                cPos = pos[1];
+                if (rPos === cPos === 3 || rPos === cPos === 4) {
+                    c.textContent = "○"
+                } else if ((rPos === 3 && cPos === 4) || (rPos === 4 && cPos === 3)) {
+                    c.textContent = "●"
+                } else {
+                    c.textContent = ""
+                }
+            }
+            cellMatrix[3][3].textContent = "○"
+            cellMatrix[4][4].textContent = "○"
+            cellMatrix[3][4].textContent = "●"
+            cellMatrix[4][3].textContent = "●"
+        }
+
         // ゲーム開始
         function startGame() {
-            button.disabled = true;
-            yourStone.textContent = `現在の石は ${nowStone} です`;
+            startButton.disabled = true;
+            form[0].appendChild(passButton);
+            message.textContent = `現在の石は ${nowStone} です`;
+            initializeField();
+            countStonesOnField();
             checkCellsCanPutStone();
         };
 
