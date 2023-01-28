@@ -165,23 +165,6 @@
             cellMatrix[rPos][cPos].setAttribute("id", String(rPos) + "_" + String(cPos));
         };
 
-        /*
-        処理内容
-        
-        開始
-        石を置ける場所をチェック
-            自身と同じ色の石の位置を textContent から特定
-            各石の周りに別の色の石があるかチェック
-                ８方向の色をチェックし、
-            別色の石がある方向の対面に石を置けるかチェック
-        石を置ける場所をクリックして配置
-            石を置ける場所にイベントを付与
-                セル縁を太くしてわかるようにする
-                マウスオーバしたら表示が変わる
-                クリックしたら置かれる
-        
-        */
-
         // マウスオーバ処理
         function highlight(cell) {
             cell.target.textContent = nowStone;
