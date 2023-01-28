@@ -10,16 +10,6 @@
             "type": "chrome",
             "url": "http://localhost:5500/",
             "webRoot": "${workspaceFolder}"
-        },
-        {
-            // "args": ["<","${workspaceFolder}/stdin/example01.txt"],
-            "name": "Launch Node Program",
-            "program": "${file}",
-            "request": "launch",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "node"
         }
     ]
 }
