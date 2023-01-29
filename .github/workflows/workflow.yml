@@ -1,15 +1,24 @@
 name: Deploy to S3
 on:
-  release:
-    types:
-      - released
+  push: 
+    branches: 
+      - hotfix
 jobs:
   deploy-to-s3:
     runs-on: ubuntu-latest
-    environment: production
     steps:
+      - name: debug1
+        run: |
+          pwd
+          ls -l
+          env
       - name: Checkout
         uses: actions/checkout@v3
+      - name: debug2
+        run: |
+          pwd
+          ls -l
+          env
       - name: Deploy
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
