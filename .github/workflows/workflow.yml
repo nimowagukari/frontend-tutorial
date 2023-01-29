@@ -1,8 +1,8 @@
 name: Deploy to S3
 on:
-  push: 
-    branches: 
-      - hotfix
+  release:
+    types:
+      - released
 jobs:
   deploy-to-s3:
     runs-on: ubuntu-latest
