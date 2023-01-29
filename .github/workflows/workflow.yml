@@ -14,6 +14,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          AWS_EC2_METADATA_DISABLED: true
         run: |
           pwd
           ls -l
@@ -27,5 +28,6 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          AWS_EC2_METADATA_DISABLED: true
         run: |
           aws s3 cp --recursive public/ s3://${S3_BUCKET}
