@@ -309,7 +309,7 @@ function initializeField() {
         pos = c.id.split("_").map((v) => { return Number(v) });
         rPos = pos[0];
         cPos = pos[1];
-        if (rPos === cPos === 3 || rPos === cPos === 4) {
+        if ((rPos === 3 && cPos === 3) || (rPos === 4 && cPos === 4)) {
             c.textContent = "○"
         } else if ((rPos === 3 && cPos === 4) || (rPos === 4 && cPos === 3)) {
             c.textContent = "●"
@@ -317,10 +317,6 @@ function initializeField() {
             c.textContent = ""
         }
     }
-    cellMatrix[3][3].textContent = "○"
-    cellMatrix[4][4].textContent = "○"
-    cellMatrix[3][4].textContent = "●"
-    cellMatrix[4][3].textContent = "●"
 }
 
 // ゲーム開始
