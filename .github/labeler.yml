@@ -1,0 +1,5 @@
+"game: reversi":
+  - any:
+    - 'public\css\reversi.css'
+    - 'public\js\reversi.js'
+    - 'public\reversi.html'
