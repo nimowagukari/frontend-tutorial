@@ -74,7 +74,7 @@ function judgeResult() {
         message.textContent = "引き分けです"
     }
     startButton.disabled = false;
-    startButton.textContent = "もう一度始める"
+    startButton.value = "もう一度始める"
 }
 
 // 石配置処理
