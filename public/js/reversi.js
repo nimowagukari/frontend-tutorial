@@ -297,6 +297,9 @@ function checkCellsCanPutStone() {
   cellsCanPutBefore = cellsCanPut;
   cellsCanPut = selectCellsCanPutStoneOppositeSide(cells);
   if (cellsCanPut.length > 0) {
+    if (passButton.disabled === false) {
+      passButton.disabled = true;
+    }
     for (let c of cellsCanPut) {
       c.style.background = "silver";
       c.addEventListener("mouseover", highlight);
