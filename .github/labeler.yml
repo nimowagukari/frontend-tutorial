@@ -4,4 +4,4 @@
     - 'public/js/reversi.js'
     - 'public/reversi.html'
 repo:
-  - '*'
+  - '**'
