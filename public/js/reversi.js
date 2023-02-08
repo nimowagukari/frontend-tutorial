@@ -9,8 +9,9 @@ let message = document.getElementById("message");
 let stoneCount = {
   white: 0,
   black: 0,
-  none: 0,
+  none: 8 * 8,
 };
+let progressBar = document.querySelectorAll("rect");
 let startButton = document.getElementById("startButton");
 let passButton = document.createElement("input");
 passButton.setAttribute("id", "passButton");
@@ -63,6 +64,26 @@ function countStonesOnField() {
     }
   }
 }
+function reflectProgressBar() {
+  let widthRateBlack =
+    stoneCount.black / Object.values(stoneCount).reduce((a, b) => a + b, 0);
+  let widthRateNone =
+    stoneCount.none / Object.values(stoneCount).reduce((a, b) => a + b, 0);
+  let widthRateWhite =
+    stoneCount.white / Object.values(stoneCount).reduce((a, b) => a + b, 0);
+
+  // 全幅はハードコート
+  let widthBlack = 400 * widthRateBlack;
+  let widthNone = 400 * widthRateNone;
+  let widthWhite = 400 * widthRateWhite;
+
+  progressBar[0].setAttribute("width",widthBlack)
+  progressBar[1].setAttribute("x",widthBlack)
+  progressBar[1].setAttribute("width",widthNone)
+  progressBar[2].setAttribute("x",widthBlack + widthNone)
+  progressBar[2].setAttribute("width",widthWhite)
+}
+
 function judgeResult() {
   passButton.remove();
   if (stoneCount.white > stoneCount.black) {
@@ -89,6 +110,7 @@ function putStone(cell) {
   cell.target.textContent = nowStone;
   turnOverStones(cell.target);
   countStonesOnField();
+  reflectProgressBar();
   toggleTurn();
   checkCellsCanPutStone();
   if ((cellsCanPutBefore === cellsCanPut) === 0 || stoneCount.none === 0) {
@@ -338,5 +360,6 @@ function startGame() {
   message.textContent = `現在の石は ${nowStone} です`;
   initializeField();
   countStonesOnField();
+  reflectProgressBar();
   checkCellsCanPutStone();
 }
