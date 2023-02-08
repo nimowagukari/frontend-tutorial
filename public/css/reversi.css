@@ -18,10 +18,16 @@ tr {
     height: 50px;
 }
 
+.progress-bar,
 .form {
     text-align: center;
     margin: 20px auto;
 }
+/*
+.progress-bar {
+    width: 400px;
+    height: 20px;
+} */
 
 .message {
     margin: 0 auto;
