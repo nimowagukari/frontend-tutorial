@@ -18,6 +18,7 @@ tr {
     height: 50px;
 }
 
+.progress-bar,
 .form {
     text-align: center;
     margin: 20px auto;
