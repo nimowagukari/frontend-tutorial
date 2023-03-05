@@ -16,6 +16,14 @@
             "type": "chrome",
             "url": "http://localhost:8081",
             "webRoot": "${workspaceFolder}/public"
+        },{
+            "name": "Launch Program",
+            "program": "${file}",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
         }
     ]
 }
