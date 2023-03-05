@@ -3,3 +3,11 @@
     - 'public/css/reversi.css'
     - 'public/js/reversi.js'
     - 'public/reversi.html'
+"game: one-shot-gag":
+  - any:
+    - 'public/css/one-shot-gag.css'
+    - 'public/js/one-shot-gag.js'
+    - 'public/one-shot-gag.html'
+    - 'docs/one-shot-gag/*'
+docs:
+  - docs/**
