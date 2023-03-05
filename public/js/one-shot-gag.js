@@ -24,16 +24,16 @@ Judger.prototype.judge = async function (gagHashHex) {
   const re = new RegExp(`[${this.laughtCharacters}]`, "g");
   const gagHashMatchLength = gagHashHex.match(re).length;
 
-  console.log(
-    `${gagHashMatchLength} / ${gagHashLength} = ${
-      gagHashMatchLength / gagHashLength
-    }`
-  );
+  // console.log(
+  //   `${gagHashMatchLength} / ${gagHashLength} = ${
+  //     gagHashMatchLength / gagHashLength
+  //   }`
+  // );
   const result = this.passThreshold <= gagHashMatchLength / gagHashLength;
   return new Promise((resolve) => {
     setTimeout(() => {
-      console.log(result);
-      console.log(`${this.waitingSec} msec waited`);
+      // console.log(result);
+      // console.log(`${this.waitingSec} msec waited`);
       if (result) {
         this.node.setAttribute("class", "pass");
         this.node.textContent = "合格";
