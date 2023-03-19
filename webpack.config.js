@@ -7,16 +7,19 @@ const isProduction = process.env.NODE_ENV == "production";
 const stylesHandler = "style-loader";
 
 const config = {
-  entry: "./src/index.js",
+  entry: {
+    reversi: "./src/index.js",
+    "one-shot-gag": "./src/index.js",
+  },
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "public", "js"),
   },
   devServer: {
     open: true,
     host: "localhost",
     static: {
-      directory: path.join(__dirname, 'public'),
-    }
+      directory: path.resolve(__dirname, "dist"),
+    },
   },
   plugins: [
     // Add your plugins here
@@ -24,10 +27,10 @@ const config = {
   ],
   module: {
     rules: [
-      {
-        test: /\.(js|jsx)$/i,
-        loader: "babel-loader",
-      },
+      // {
+      //   test: /\.(js|jsx)$/i,
+      //   loader: "babel-loader",
+      // },
       {
         test: /\.css$/i,
         use: [stylesHandler, "css-loader"],
