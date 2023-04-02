@@ -205,3 +205,5 @@ $RECYCLE.BIN/
 /work
 /dist/js/*
 !/dist/js/.gitkeep
+/dist/css/*
+!/dist/css/.gitkeep
