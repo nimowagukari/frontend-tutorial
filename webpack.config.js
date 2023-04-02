@@ -8,11 +8,12 @@ const stylesHandler = "style-loader";
 
 const config = {
   entry: {
-    reversi: "./src/index.js",
-    "one-shot-gag": "./src/index.js",
+    reversi: "./src/js/reversi.js",
+    "one-shot-gag": "./src/js/one-shot-gag.js",
   },
   output: {
-    path: path.resolve(__dirname, "public", "js"),
+    path: path.resolve(__dirname, "dist", "js"),
+    filename: "[name].js",
   },
   devServer: {
     open: true,
@@ -51,6 +52,7 @@ module.exports = () => {
     config.mode = "production";
   } else {
     config.mode = "development";
+    config.devtool = "source-map";
   }
   return config;
 };

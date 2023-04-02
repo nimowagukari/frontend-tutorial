@@ -203,3 +203,7 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,windows,visualstudiocode,node
 /work
+!/dist/js/.gitkeep
+!/dist/*.html
+!/dist/css
+!/dist/img
