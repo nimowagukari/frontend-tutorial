@@ -24,7 +24,5 @@
     "watch": "webpack --watch",
     "serve": "webpack serve"
   },
-  "version": "1.0.0",
-  "description": "My webpack project",
-  "name": "my-webpack-project"
+  "private": true
 }
