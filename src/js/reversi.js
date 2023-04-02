@@ -13,16 +13,17 @@ let stoneCount = {
 };
 let progressBar = document.querySelectorAll("rect");
 let startButton = document.getElementById("startButton");
+startButton.onclick = startGame;
 let passButton = document.createElement("input");
 passButton.setAttribute("id", "passButton");
 passButton.setAttribute("type", "button");
 passButton.setAttribute("value", "パスする");
-passButton.setAttribute("onclick", "passTurn()");
+passButton.onclick = passTurn;
 passButton.disabled = true;
 let form = document.getElementsByClassName("form");
 
 // 空のフィールド変数を作成
-for (r = 0; r < 8; r++) {
+for (let r = 0; r < 8; r++) {
   cellMatrix.push([]);
 }
 
@@ -50,7 +51,7 @@ function countStonesOnField() {
   stoneCount.white = 0;
   stoneCount.black = 0;
   stoneCount.none = 0;
-  for (c of fieldCells) {
+  for (let c of fieldCells) {
     switch (c.textContent) {
       case "○":
         stoneCount.white += 1;
@@ -77,11 +78,11 @@ function reflectProgressBar() {
   let widthNone = 400 * widthRateNone;
   let widthWhite = 400 * widthRateWhite;
 
-  progressBar[0].setAttribute("width",widthBlack)
-  progressBar[1].setAttribute("x",widthBlack)
-  progressBar[1].setAttribute("width",widthNone)
-  progressBar[2].setAttribute("x",widthBlack + widthNone)
-  progressBar[2].setAttribute("width",widthWhite)
+  progressBar[0].setAttribute("width", widthBlack);
+  progressBar[1].setAttribute("x", widthBlack);
+  progressBar[1].setAttribute("width", widthNone);
+  progressBar[2].setAttribute("x", widthBlack + widthNone);
+  progressBar[2].setAttribute("width", widthWhite);
 }
 
 function judgeResult() {
@@ -273,8 +274,8 @@ function selectCellsCanPutStoneOppositeSide(cells) {
   for (let f of cells) {
     cellsAroundOnAnotherStone = selectCellsAround(f, "another");
     for (let t of cellsAroundOnAnotherStone) {
-      posDiff = getPosDiff(f, t);
-      canPutStoneOppositeSide = checkDirectionCanPutStone(f, posDiff);
+      const posDiff = getPosDiff(f, t);
+      const canPutStoneOppositeSide = checkDirectionCanPutStone(f, posDiff);
       if (canPutStoneOppositeSide) {
         cellsCanPutStoneOppositeSide.add(f);
       }
@@ -304,7 +305,7 @@ function turnOverStones(cell) {
   let cells = selectCellsAround(from, "another");
   let canPut;
   let posDiff;
-  for (to of cells) {
+  for (let to of cells) {
     posDiff = getPosDiff(from, to);
     canPut = checkDirectionCanPutStone(from, posDiff);
     if (canPut) {
@@ -337,7 +338,7 @@ function initializeField() {
   let pos;
   let rPos;
   let cPos;
-  for (c of fieldCells) {
+  for (let c of fieldCells) {
     pos = c.id.split("_").map((v) => {
       return Number(v);
     });

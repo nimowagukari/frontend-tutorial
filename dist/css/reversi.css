@@ -1,0 +1,32 @@
+h1 {
+  text-align: center;
+}
+
+table {
+  border: 1px solid;
+  border-collapse: collapse;
+}
+
+td {
+  font-size: large;
+  border: 1px solid;
+  width: 50px;
+  text-align: center;
+}
+
+tr {
+  height: 50px;
+}
+
+.progress-bar,
+.form {
+  text-align: center;
+  margin: 20px auto;
+}
+
+.message {
+  margin: 0 auto;
+  width: 400px;
+  height: 60px;
+  text-align: center;
+}

@@ -5,17 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "[Win]Launch Chrome ",
-            "request": "launch",
-            "type": "chrome",
-            "url": "http://localhost:5500/",
-            "webRoot": "${workspaceFolder}/public",
-        },{
             "name": "[devcontainer]Launch Chrome",
             "request": "launch",
             "type": "chrome",
-            "url": "http://localhost:8081",
-            "webRoot": "${workspaceFolder}/public"
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}/dist",
+            "trace": true
         },{
             "name": "Launch Program",
             "program": "${file}",
