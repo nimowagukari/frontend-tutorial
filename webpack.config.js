@@ -14,6 +14,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, "dist", "js"),
     filename: "[name].js",
+    publicPath: "/js"
   },
   devServer: {
     open: true,
