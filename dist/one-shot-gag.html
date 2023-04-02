@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="css/one-shot-gag.css" />
+    <title>一発ギャグ</title>
+  </head>
+
+  <body>
+    <section>
+      <article>
+        <h1>一発ギャグ</h1>
+        <div>
+          <label
+            >一発ギャグを入力して下さい：
+            <input
+              id="gagText"
+              name="gagText"
+              type="text"
+              style="width: 400px"
+            />
+            <input name="gagButton" type="button" value="GO" disabled="true" />
+          </label>
+        </div>
+        <div id="judges">
+          <div class="judge">
+            <img src="./img/judge1.jpg" alt="審査員１" />
+            <p id="judge1"></p>
+          </div>
+          <div class="judge">
+            <img src="./img/judge2.jpg" alt="審査員２" />
+            <p id="judge2"></p>
+          </div>
+          <div class="judge">
+            <img src="./img/judge3.jpg" alt="審査員３" />
+            <p id="judge3"></p>
+          </div>
+        </div>
+        <div style="width: 400px; margin: 20px auto">
+          <p id="result"></p>
+        </div>
+      </article>
+    </section>
+    <script type="text/javascript" src="js/one-shot-gag.js"></script>
+  </body>
+</html>

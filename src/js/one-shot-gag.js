@@ -1,4 +1,4 @@
-async function digestMessage(message) {
+export async function digestMessage(message) {
   const msgUint8 = new TextEncoder().encode(message); // (utf-8 の) Uint8Array にエンコードする
   const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // メッセージをハッシュする
   const hashArray = Array.from(new Uint8Array(hashBuffer)); // バッファーをバイト列に変換する
@@ -8,7 +8,7 @@ async function digestMessage(message) {
   return hashHex;
 }
 
-function Judger(laughtCharacters, passThreshold, node) {
+export function Judger(laughtCharacters, passThreshold, node) {
   this.laughtCharacters = laughtCharacters;
   this.passThreshold = passThreshold;
   this.node = node;
@@ -46,7 +46,7 @@ Judger.prototype.judge = async function (gagHashHex) {
   });
 };
 
-async function showGag(e) {
+export async function showGag() {
   const gagText = document.querySelector("#gagText").value;
   const resultText = document.querySelector("#result");
   const gagHashHex = await digestMessage(gagText);
@@ -54,17 +54,17 @@ async function showGag(e) {
   resultText.removeAttribute("class");
   resultText.textContent = "";
 
-  judgeResult = await Promise.all([
+  const judgeResult = await Promise.all([
     judger1.judge(gagHashHex),
     judger2.judge(gagHashHex),
     judger3.judge(gagHashHex),
   ]);
-  if (judgeResult.filter(b=>b).length >= 2) {
-    result.setAttribute("class", "pass");
-    result.textContent = "合格"
-  }else {
-    result.setAttribute("class", "failure");
-    result.textContent = "不合格"
+  if (judgeResult.filter((b) => b).length >= 2) {
+    resultText.setAttribute("class", "pass");
+    resultText.textContent = "合格";
+  } else {
+    resultText.setAttribute("class", "failure");
+    resultText.textContent = "不合格";
   }
 }
 
@@ -75,15 +75,17 @@ const judger1 = new Judger("01234567", 0.5, judge1);
 const judger2 = new Judger("456789ab", 0.5, judge2);
 const judger3 = new Judger("89abcdef", 0.5, judge3);
 
-gagButton = document.getElementsByName("gagButton")[0];
-gagText = document.querySelector("#gagText");
+const gagButton = document.getElementsByName("gagButton")[0];
+const gagText = document.querySelector("#gagText");
 
-gagText.onchange = (e) => {
+gagText.addEventListener("change", (e) => {
   if (e.target.value === "") {
     gagButton.disabled = true;
   } else {
     gagButton.disabled = false;
-  };
-};
+  }
+});
 
-gagButton.onclick = showGag;
+gagButton.addEventListener("click", () => {
+  showGag();
+});
