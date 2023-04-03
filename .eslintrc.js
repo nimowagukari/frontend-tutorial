@@ -6,7 +6,12 @@ module.exports = {
   extends: ["eslint:recommended", "prettier"],
   overrides: [
     {
-      files: [".eslintrc.js", "jest.config.js", "webpack.config.js"],
+      files: [
+        ".eslintrc.js",
+        "jest.config.js",
+        "lint-staged.config.js",
+        "webpack.config.js",
+      ],
       env: {
         commonjs: true,
         node: true,
