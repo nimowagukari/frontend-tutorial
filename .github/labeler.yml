@@ -2,6 +2,7 @@
   - docs/one-shot-gag/*
   - dist/one-shot-gag.html
   - src/**/one-shot-gag.*
+  - src/modules/judge.js*
 "game: reversi":
   - docs/reversi/*
   - dist/reversi.html
