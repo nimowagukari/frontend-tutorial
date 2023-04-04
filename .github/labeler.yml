@@ -1,8 +1,10 @@
-"game: reversi":
-  - "public/**/reversi.*"
-  - "docs/reversi/*"
 "game: one-shot-gag":
-  - "public/**/one-shot-gag.*"
-  - "docs/one-shot-gag/*"
+  - docs/one-shot-gag/*
+  - dist/one-shot-gag.html
+  - src/**/one-shot-gag.*
+"game: reversi":
+  - docs/reversi/*
+  - dist/reversi.html
+  - src/**/reversi.*
 docs:
   - docs/**
