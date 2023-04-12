@@ -1,32 +1,84 @@
+@use "sass:map";
+
+$cell-minsize: 50px;
+
+// 参考：https://zenn.dev/web_tips/articles/095d7419507ca9
+$breakpoints: (
+  "sm": "screen and (min-width: 400px)",
+  "md": "screen and (min-width: 768px)",
+  "lg": "screen and (min-width: 1000px)",
+  "xl": "screen and (min-width: 1200px)",
+) !default;
+
+@mixin mq($breakpoint) {
+  @media #{map.get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+
 h1 {
   text-align: center;
 }
 
-table {
-  border: 1px solid;
+.fieldWrapper {
+  box-sizing: border-box;
+  margin: 0 30px;
+}
+
+.field {
+  aspect-ratio: 1;
+  background-color: green;
+  border-color: black;
+  border-style: ridge;
+  border-width: 5px;
+  box-sizing: inherit;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.cell {
+  aspect-ratio: 1;
+  border-color: black;
+  border-style: groove;
+  box-sizing: inherit;
+}
+
+.stone {
   border-collapse: collapse;
+  border-radius: 50%;
+  border-style: solid;
+  height: 70%;
+  margin: 10%;
+  width: 70%;
+  visibility: hidden;
 }
 
-td {
-  font-size: large;
-  border: 1px solid;
-  width: 50px;
-  text-align: center;
+.black {
+  background-color: black;
+  border-color: black;
+  visibility: visible;
+}
+.white {
+  background-color: white;
+  border-color: white;
+  visibility: visible;
 }
 
-tr {
-  height: 50px;
+.hover {
+  opacity: 0.5;
 }
 
-.progress-bar,
+// .progress-bar,
 .form {
-  text-align: center;
   margin: 20px auto;
+  text-align: center;
 }
 
 .message {
-  margin: 0 auto;
-  width: 400px;
   height: 60px;
+  margin: 0 auto;
   text-align: center;
 }
