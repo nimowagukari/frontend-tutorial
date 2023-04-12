@@ -19,6 +19,10 @@ const config = {
   devServer: {
     open: true,
     host: "localhost",
+    // port: 8080,
+    // client: {
+    //   webSocketURL: 'ws://0.0.0.0:8081/ws'
+    // },
     static: {
       directory: path.resolve(__dirname, "dist"),
     },
