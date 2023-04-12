@@ -17,7 +17,6 @@ const config = {
     publicPath: "/js",
   },
   devServer: {
-    open: true,
     host: "0.0.0.0",
     static: {
       directory: path.resolve(__dirname, "dist"),
