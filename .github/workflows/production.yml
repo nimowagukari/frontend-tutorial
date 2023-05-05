@@ -19,7 +19,9 @@ jobs:
         run: npm ci
 
       - name: Build Contents
-        run: npm run build
+        run: |
+          npx sass src/css:dist/css
+          npm run build:dev
 
       - name: Deploy Contents
         env:
