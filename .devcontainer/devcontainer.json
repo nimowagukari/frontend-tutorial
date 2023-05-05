@@ -11,7 +11,7 @@
 	},
 	"runArgs": [
 		"--name",
-		"frontend-tutorial"
+		"${localWorkspaceFolderBasename}"
 	],
 	"customizations": {
 		"vscode": {
@@ -28,7 +28,7 @@
 	"appPort": ["8080:8080"]
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "yarn install",
+	// "postCreateCommand": "git config --global --add user.name nimowagukari && git config --global --add user.email nimowagukari@outlook.com"
 
 	// Configure tool-specific properties.
 	// "customizations": {},
