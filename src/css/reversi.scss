@@ -67,8 +67,11 @@ h1 {
   visibility: visible;
 }
 
-.hover {
-  opacity: 0.5;
+.can-put {
+  background-color: rgb(160, 255, 160);
+}
+.can-put:hover {
+  background-color: rgb(255, 120, 120);
 }
 
 // .progress-bar,
@@ -81,4 +84,8 @@ h1 {
   height: 60px;
   margin: 0 auto;
   text-align: center;
+}
+
+.hidden {
+  display: none;
 }
