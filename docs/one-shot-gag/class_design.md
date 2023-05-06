@@ -1,6 +1,7 @@
 # 設計
 
 ## クラス図
+
 ```mermaid
 classDiagram
     class Judger{
@@ -13,6 +14,7 @@ classDiagram
 ```
 
 ## シーケンス図
+
 ```mermaid
 sequenceDiagram
     actor User
@@ -25,3 +27,11 @@ sequenceDiagram
         Judgers->>User: 合格
     end
 ```
+
+## ギャグ判定ロジック
+
+- ギャグの文字列を固定長のハッシュに変換
+- 審査員ごとに異なる笑いのツボを、文字種類(laughtCharacters) で定義
+- laughtCharacters にマッチした文字数の、全ハッシュ長に対する割合(passThreshold) で判定
+  - passThreshold の値以上だと合格
+  - passThreshold の値未満だと不合格

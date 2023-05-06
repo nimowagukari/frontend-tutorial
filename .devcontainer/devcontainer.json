@@ -11,17 +11,24 @@
 	},
 	"runArgs": [
 		"--name",
-		"frontend-tutorial"
-	]
-
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+		"${localWorkspaceFolderBasename}"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"esbenp.prettier-vscode",
+				"dbaeumer.vscode-eslint",
+				"mrmlnc.vscode-scss",
+				"shd101wyy.markdown-preview-enhanced"
+			]
+		}
+	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+	"appPort": ["8080:8080"]
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "yarn install",
+	// "postCreateCommand": "git config --global --add user.name nimowagukari && git config --global --add user.email nimowagukari@outlook.com"
 
 	// Configure tool-specific properties.
 	// "customizations": {},

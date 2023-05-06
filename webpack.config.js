@@ -7,16 +7,20 @@ const isProduction = process.env.NODE_ENV == "production";
 const stylesHandler = "style-loader";
 
 const config = {
-  entry: "./src/index.js",
+  entry: {
+    reversi: "./src/js/reversi.js",
+    "one-shot-gag": "./src/js/one-shot-gag.js",
+  },
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "dist", "js"),
+    filename: "[name].js",
+    publicPath: "/js",
   },
   devServer: {
-    open: true,
-    host: "localhost",
+    host: "0.0.0.0",
     static: {
-      directory: path.join(__dirname, 'public'),
-    }
+      directory: path.resolve(__dirname, "dist"),
+    },
   },
   plugins: [
     // Add your plugins here
@@ -24,10 +28,10 @@ const config = {
   ],
   module: {
     rules: [
-      {
-        test: /\.(js|jsx)$/i,
-        loader: "babel-loader",
-      },
+      // {
+      //   test: /\.(js|jsx)$/i,
+      //   loader: "babel-loader",
+      // },
       {
         test: /\.css$/i,
         use: [stylesHandler, "css-loader"],
@@ -48,6 +52,7 @@ module.exports = () => {
     config.mode = "production";
   } else {
     config.mode = "development";
+    config.devtool = "source-map";
   }
   return config;
 };

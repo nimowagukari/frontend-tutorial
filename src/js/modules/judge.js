@@ -8,7 +8,7 @@ async function digestMessage(message) {
   return hashHex;
 }
 
-function Judger(laughtCharacters, passThreshold, node) {
+export function Judger(laughtCharacters, passThreshold, node) {
   this.laughtCharacters = laughtCharacters;
   this.passThreshold = passThreshold;
   this.node = node;
@@ -24,16 +24,16 @@ Judger.prototype.judge = async function (gagHashHex) {
   const re = new RegExp(`[${this.laughtCharacters}]`, "g");
   const gagHashMatchLength = gagHashHex.match(re).length;
 
-  console.log(
-    `${gagHashMatchLength} / ${gagHashLength} = ${
-      gagHashMatchLength / gagHashLength
-    }`
-  );
+  // console.log(
+  //   `${gagHashMatchLength} / ${gagHashLength} = ${
+  //     gagHashMatchLength / gagHashLength
+  //   }`
+  // );
   const result = this.passThreshold <= gagHashMatchLength / gagHashLength;
   return new Promise((resolve) => {
     setTimeout(() => {
-      console.log(result);
-      console.log(`${this.waitingSec} msec waited`);
+      // console.log(result);
+      // console.log(`${this.waitingSec} msec waited`);
       if (result) {
         this.node.setAttribute("class", "pass");
         this.node.textContent = "合格";
@@ -46,44 +46,21 @@ Judger.prototype.judge = async function (gagHashHex) {
   });
 };
 
-async function showGag(e) {
+export async function showGag(judgers) {
   const gagText = document.querySelector("#gagText").value;
   const resultText = document.querySelector("#result");
   const gagHashHex = await digestMessage(gagText);
+  const judgeResultsPromise = judgers.map((j) => j.judge(gagHashHex));
 
   resultText.removeAttribute("class");
   resultText.textContent = "";
 
-  judgeResult = await Promise.all([
-    judger1.judge(gagHashHex),
-    judger2.judge(gagHashHex),
-    judger3.judge(gagHashHex),
-  ]);
-  if (judgeResult.filter(b=>b).length >= 2) {
-    result.setAttribute("class", "pass");
-    result.textContent = "合格"
-  }else {
-    result.setAttribute("class", "failure");
-    result.textContent = "不合格"
+  const judgeResults = await Promise.all(judgeResultsPromise);
+  if (judgeResults.filter((b) => b).length >= 2) {
+    resultText.setAttribute("class", "pass");
+    resultText.textContent = "合格";
+  } else {
+    resultText.setAttribute("class", "failure");
+    resultText.textContent = "不合格";
   }
 }
-
-const judge1 = document.querySelector("#judge1");
-const judge2 = document.querySelector("#judge2");
-const judge3 = document.querySelector("#judge3");
-const judger1 = new Judger("01234567", 0.5, judge1);
-const judger2 = new Judger("456789ab", 0.5, judge2);
-const judger3 = new Judger("89abcdef", 0.5, judge3);
-
-gagButton = document.getElementsByName("gagButton")[0];
-gagText = document.querySelector("#gagText");
-
-gagText.onchange = (e) => {
-  if (e.target.value === "") {
-    gagButton.disabled = true;
-  } else {
-    gagButton.disabled = false;
-  };
-};
-
-gagButton.onclick = showGag;
