@@ -200,7 +200,7 @@ export class Field {
       case this.stoneCount.black:
         this.gameMaker.judgeWinner();
         startButton.disabled = false;
-        startButton.textContent = "もう一度始める";
+        startButton.value = "もう一度始める";
         startButton.addEventListener("click", this.gameMaker.restartGame);
         return;
     }
