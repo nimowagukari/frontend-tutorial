@@ -21,7 +21,7 @@ jobs:
       - name: Build Contents
         run: |
           npx sass --no-source-map src/css:dist/css
-          npm run build:dev
+          npm run build
 
       - name: Deploy Contents
         env:
