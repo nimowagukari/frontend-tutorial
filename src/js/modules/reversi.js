@@ -192,12 +192,17 @@ export class Field {
 
     // 石の個数情報を最新化＆終了判定
     this.updateStoneCount();
-    if (this.stoneCount.none === 0) {
-      this.gameMaker.judgeWinner();
-      const startButton = document.querySelector("#start-button");
-      startButton.disabled = false;
-      startButton.addEventListener("click", this.gameMaker.restartGame);
-      return;
+
+    const startButton = document.querySelector("#start-button");
+    switch (0) {
+      case this.stoneCount.none:
+      case this.stoneCount.white:
+      case this.stoneCount.black:
+        this.gameMaker.judgeWinner();
+        startButton.disabled = false;
+        startButton.textContent = "もう一度始める";
+        startButton.addEventListener("click", this.gameMaker.restartGame);
+        return;
     }
 
     // 次のプレイヤーのイベントを付与
@@ -339,10 +344,6 @@ export class GameMaker {
         message.textContent = "黒の手番です";
         break;
     }
-    console.log({
-      gameMaker: this.currentPlayer.stoneColor,
-      field: this.field.currentPlayer.stoneColor,
-    });
   }
 
   judgeWinner() {

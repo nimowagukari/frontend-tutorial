@@ -20,7 +20,7 @@ jobs:
 
       - name: Build Contents
         run: |
-          npx sass src/css:dist/css
+          npx sass --no-source-map src/css:dist/css
           npm run build:dev
 
       - name: Deploy Contents
