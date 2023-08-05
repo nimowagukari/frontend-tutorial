@@ -16,6 +16,9 @@ resource "aws_cloudfront_origin_access_control" "default" {
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
 }
+data "aws_cloudfront_cache_policy" "disabled" {
+  name = "Managed-CachingDisabled"
+}
 
 resource "aws_acm_certificate" "stg" {
   provider          = aws.ue1
@@ -42,6 +45,14 @@ resource "aws_cloudfront_distribution" "stg" {
     cached_methods         = ["GET", "HEAD"]
     cache_policy_id        = data.aws_cloudfront_cache_policy.this.id
     compress               = true
+    target_origin_id       = "${var.host}-staging"
+    viewer_protocol_policy = "allow-all"
+  }
+  ordered_cache_behavior {
+    path_pattern           = "/healthcheck.html"
+    allowed_methods        = ["GET", "HEAD"]
+    cached_methods         = ["GET", "HEAD"]
+    cache_policy_id        = data.aws_cloudfront_cache_policy.disabled.id
     target_origin_id       = "${var.host}-staging"
     viewer_protocol_policy = "allow-all"
   }
@@ -96,6 +107,14 @@ resource "aws_cloudfront_distribution" "prod" {
     cached_methods         = ["GET", "HEAD"]
     cache_policy_id        = data.aws_cloudfront_cache_policy.this.id
     compress               = true
+    target_origin_id       = var.host
+    viewer_protocol_policy = "allow-all"
+  }
+  ordered_cache_behavior {
+    path_pattern           = "/healthcheck.html"
+    allowed_methods        = ["GET", "HEAD"]
+    cached_methods         = ["GET", "HEAD"]
+    cache_policy_id        = data.aws_cloudfront_cache_policy.disabled.id
     target_origin_id       = var.host
     viewer_protocol_policy = "allow-all"
   }
