@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
-    bucket = var.tfstate_bucket
-    key    = "tfstate.d/frontend-tutorial.tfstate.json"
+    # 機密情報の漏洩防止の為、bucket は -backend-config オプションで指定すること
+    key    = "tfstate.d/frontend-tutorial/terraform.tfstate.json"
     region = "ap-northeast-1"
   }
   required_providers {
