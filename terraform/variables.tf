@@ -16,7 +16,3 @@ variable "log_bucket" {
   type = string
   description = "CloudFront で指定する、ログの S3 バケット名"
 }
-variable "tfstate_bucket" {
-  type = string
-  description = "tfstate 保存先の S3 バケット名"
-}
