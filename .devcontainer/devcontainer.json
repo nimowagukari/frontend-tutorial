@@ -7,8 +7,7 @@
 	"features": {
 		"ghcr.io/devcontainers/features/aws-cli:1": {},
 		"ghcr.io/devcontainers/features/git:1": {},
-		"ghcr.io/devcontainers-contrib/features/bash-command:1": {},
-		"ghcr.io/devcontainers/features/terraform": {}
+		"ghcr.io/devcontainers-extra/features/bash-command:1": {}
 	},
 	"runArgs": [
 		"--name",
@@ -20,8 +19,7 @@
 				"esbenp.prettier-vscode",
 				"dbaeumer.vscode-eslint",
 				"mrmlnc.vscode-scss",
-				"shd101wyy.markdown-preview-enhanced",
-				"hashicorp.terraform"
+				"shd101wyy.markdown-preview-enhanced"
 			]
 		}
 	},
