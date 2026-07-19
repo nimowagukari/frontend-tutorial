@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/linux,windows,visualstudiocode,node,terraform
-# Edit at https://www.toptal.com/developers/gitignore?templates=linux,windows,visualstudiocode,node,terraform
+# Created by https://www.toptal.com/developers/gitignore/api/node,linux,windows,visualstudiocode
+# Edit at https://www.toptal.com/developers/gitignore?templates=node,linux,windows,visualstudiocode
 
 ### Linux ###
 *~
@@ -108,7 +108,7 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-# dist
+dist
 
 # Gatsby files
 .cache/
