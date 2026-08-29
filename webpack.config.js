@@ -8,11 +8,11 @@ const stylesHandler = "style-loader";
 
 const config = {
   entry: {
-    reversi: "./src/js/reversi.js",
-    "one-shot-gag": "./src/js/one-shot-gag.js",
+    reversi: "./src/frontend-tutorial/js/reversi.js",
+    "one-shot-gag": "./src/frontend-tutorial/js/one-shot-gag.js",
   },
   output: {
-    path: path.resolve(__dirname, "dist", "js"),
+    path: path.resolve(__dirname, "dist", "frontend-tutorial", "js"),
     filename: "[name].js",
     publicPath: "/js",
   },
