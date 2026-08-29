@@ -20,7 +20,7 @@ jobs:
 
       - name: Build Contents
         run: |
-          npx sass --no-source-map src/frontend-tutorial/css dist/frontend-tutorial/css
+          npx sass --no-source-map src/frontend-tutorial/css:dist/frontend-tutorial/css
           npm run build
 
       - name: Deploy Contents
